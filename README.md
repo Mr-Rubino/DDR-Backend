@@ -16,8 +16,7 @@ Generates a summary based on a given text
 <b> Returns: </b>
 * JSON summary: JSON object of the generated summary
 
-
- ## /questions endpoint (POST)
+## /questions endpoint (POST)
 
 Generates 3 multiple choice questions based on a given text
 
@@ -28,7 +27,7 @@ Generates 3 multiple choice questions based on a given text
 * JSON questions: JSON object of the generated questions and answers
 
 
- ## /wiki endpoint (POST)
+## /wiki endpoint (POST)
 
 Finds dbpedia links in a given text
 
