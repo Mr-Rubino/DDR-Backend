@@ -11,14 +11,24 @@ openai.api_key = data["key"]
 
 app = Flask(__name__)
 
+
+"""
+    /summarize endpoint (POST)
+
+    Generates a summary based on a given text
+
+    Form Arguments:
+        String text: text to retrieve dbpedia sources from
+
+    Returns:
+        JSON summary: JSON object of the generated summary
+
+"""
 @app.route('/summarize', methods=["POST"])
-def ocr():
+def summarize():
 
     # Get the data from the POST request
     text = request.form.get("text")
-    language = request.form.get("language")
-
-    wikiLinks = dbpedia(text, language)
 
     gptPrompt = f'Provide a summary on the following text: \n{text}'
 
@@ -27,16 +37,26 @@ def ocr():
         gptPrompt
         )
     
-    res = {
-        "summary": gptResponse,
-        "wikiLinks": wikiLinks
+    summary = {
+        "response": gptResponse
     }
 
-    return res
+    return summary
     
+"""
+    /questions endpoint (POST)
 
-@app.route('/wiki', methods=["POST"])
-def wiki():
+    Generates 3 multiple choice questions based on a given text
+
+    Form Arguments:
+        String text: text to retrieve dbpedia sources from
+
+    Returns:
+        JSON questions: JSON object of the generated questions and answers
+
+"""
+@app.route('/questions', methods=["POST"])
+def questions():
 
     # Retrieve text
     text = request.form.get("text")
@@ -77,6 +97,33 @@ def wiki():
     }
 
     return questions
-  
+
+
+"""
+    /wiki endpoint (POST)
+
+    Finds dbpedia links in a given text
+
+    Form Arguments:
+        String text: text to retrieve dbpedia sources from
+        String language: language abbreviation according to ISO 639-1
+
+    Returns:
+        JSON wikiLinks: JSON object of the found dbpedia articles
+
+"""
+@app.route("/wiki", methods=["POST"])
+def wiki():
+    
+    # Get the data from the POST request
+    text = request.form.get("text")
+    language = request.form.get("language")
+
+    wikiLinks = dbpedia(text, language)
+
+    return wikiLinks
+
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
