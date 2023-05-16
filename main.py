@@ -10,7 +10,7 @@ openai.api_key = data["key"]
 
 app = Flask(__name__)
 
-@app.route('/ocr', methods=["POST"])
+@app.route('/summarize', methods=["POST"])
 def ocr():
 
     # Get the data from the POST request
