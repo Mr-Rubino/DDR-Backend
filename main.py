@@ -2,6 +2,7 @@ from flask import Flask, request
 import spacy_dbpedia_spotlight
 import openai
 import json
+from program import dbpedia, chatgpt
 
 file = open("/Users/rubenvandijkhuizen/OneDrive/Studie/Jaar 2/Data Driven Research/Final Project/data.json")
 data = json.load(file)
@@ -33,17 +34,19 @@ def ocr():
 
     return res
     
+
 @app.route('/wiki', methods=["POST"])
 def wiki():
 
+    # Retrieve text
     text = request.form.get("text")
 
+    # OpenAI
     gptPrompt = f'Provide questions for the following text: \n{text}'
-
     gptBehaviour = "You are a service that provides 3 multiple choice questions based on a given text Provide 3 possible answers to each question of which only one is correct. Also provide the correct answer"
-
     response = chatgpt(gptBehaviour, gptPrompt)
 
+    # Split response
     lines = response.split("\n")
 
     questions = {
@@ -74,46 +77,6 @@ def wiki():
     }
 
     return questions
-
-
-
-    
-    
-
-    
-
-def dbpedia(text, language):
-    
-    # Query the nlp program
-    nlp = spacy_dbpedia_spotlight.create(language)
-    query = nlp(text)
-
-    result = {}
-    
-    for ent in query.ents:
-        result[ent.text] = ent.kb_id_
-
-    return result
-
-
-
-def chatgpt(behaviour ,prompt):
-    response = openai.ChatCompletion.create(model="gpt-3.5-turbo", 
-                                                messages = [
-                                                    {
-                                                        "role": "system",
-                                                        "content": behaviour
-                                                    },
-                                                    {
-                                                        "role": "user", 
-                                                        "content": prompt
-                                                    }
-
-                                                ], 
-                                                temperature=0)
-    
-    return response["choices"][0]["message"]["content"]
-
-
+  
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
