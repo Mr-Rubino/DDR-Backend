@@ -4,11 +4,13 @@ import openai
 import json
 from program import dbpedia, chatgpt
 
+# Retrieve API key from data file
 file = open("/Users/rubenvandijkhuizen/OneDrive/Studie/Jaar 2/Data Driven Research/Final Project/data.json")
 data = json.load(file)
-
+file.close()
 openai.api_key = data["key"]
 
+# Start API library
 app = Flask(__name__)
 
 
@@ -30,13 +32,16 @@ def summarize():
     # Get the data from the POST request
     text = request.form.get("text")
 
+    # Prompt for AI
     gptPrompt = f'Provide a summary on the following text: \n{text}'
 
+    # Access AI
     gptResponse = chatgpt(
         "You are a service that provides short summaries for for studying purposes",
         gptPrompt
         )
     
+    # Create a JSON object for returning
     summary = {
         "response": gptResponse
     }
@@ -68,6 +73,8 @@ def questions():
 
     # Split response
     lines = response.split("\n")
+    
+    print(response)
 
     questions = {
         "question_1": {
@@ -102,7 +109,7 @@ def questions():
 """
     /wiki endpoint (POST)
 
-    Finds dbpedia links in a given text
+    Finds dbpedia links in a given text using the NLP program
 
     Form Arguments:
         String text: text to retrieve dbpedia sources from
@@ -119,6 +126,7 @@ def wiki():
     text = request.form.get("text")
     language = request.form.get("language")
 
+    # Parse text through NLP program
     wikiLinks = dbpedia(text, language)
 
     return wikiLinks

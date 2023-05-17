@@ -29,7 +29,7 @@ Generates 3 multiple choice questions based on a given text
 
 ## /wiki endpoint (POST)
 
-Finds dbpedia links in a given text
+Finds dbpedia links in a given text using the NLP program
 
 <b> Form Arguments: </b>
 * String text: text to retrieve dbpedia sources from
