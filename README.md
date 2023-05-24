@@ -5,6 +5,13 @@ The app uses Vision and VisionKit frameworks for OCR, and a custom backend for p
 
 
 
+## /status endpoint (GET)
+
+For applications to check if the server is running
+
+<b> Returns: </b>
+* "OK" if server is up and running
+
 ## /summarize endpoint (POST)
 
 Generates a summary based on a given text

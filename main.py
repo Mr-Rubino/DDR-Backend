@@ -15,6 +15,20 @@ app = Flask(__name__)
 
 
 """
+    /status endpoint
+
+    For applications to check if the server is running
+
+    Returns:
+        "OK" if server is running
+
+"""
+
+@app.get('/status')
+def status():
+    return "OK"
+
+"""
     /summarize endpoint (POST)
 
     Generates a summary based on a given text
