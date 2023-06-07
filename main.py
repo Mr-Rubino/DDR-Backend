@@ -81,7 +81,7 @@ def questions():
     text = request.form.get("text")
 
     # OpenAI
-    gptPrompt = f'Provide questions for the following text in JSON format: \n{text}'
+    gptPrompt = f'Provide questions for the following text in JSON format without returning the text itself and point out the answer with either 1, 2 or 3: \n{text}'
     gptBehaviour = "You are a service that provides 3 multiple choice questions based on a given text Provide 3 possible answers to each question of which only one is correct. Also provide the correct answer"
     response = chatgpt(gptBehaviour, gptPrompt)
     
@@ -114,6 +114,29 @@ def wiki():
     return wikiLinks
 
 
+"""
+    /flashcards endpoint (POST)
+
+    Returns flashcards (questions with a single answer)
+
+    Form Arguments:
+        String text: text to create the flashcards from
+
+    Returns:
+        JSON response: JSON object of the created flashcards
+
+"""
+@app.route("/flashcards", methods=["POST"])
+def flashcards():
+    
+    text = request.form.get("text")
+
+    gptBehaviour = "Your role is one of a studying assistant. You will be sent a text, and you will be expected to return flashcards (questions with only one answer)"
+    gptPrompt = f"Create flashcards based on the following text, return the result in JSON format: {text}"
+
+    response = chatgpt(gptBehaviour, gptPrompt)
+
+    return response
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=False, ssl_context="adhoc")

@@ -44,3 +44,13 @@ Finds dbpedia links in a given text using the NLP program
 
 <b> Returns: </b>
 * JSON wikiLinks: JSON object of the found dbpedia articles
+
+## /flashcards endpoint (POST)
+
+Returns flashcards (questions with a single answer)
+
+<b> Form Arguments: </b>
+* String text: text to create the flashcards from
+
+<b> Returns: </b>
+* JSON response: JSON object of the created flashcards
